@@ -23,7 +23,6 @@ namespace ServicesApp.Services
         {
             HistoryStats result = await _dbService.GetHistoryStatsAsync(type);
             result.CountInLast30Days = await _dbService.GetHistoryLast30DaysAsync(type);
-
             return result;
         }
 

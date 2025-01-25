@@ -58,7 +58,7 @@
                     <DataGridTextColumn Header="Max Result" Binding="{Binding MaxResult}" Width="*" TextBlock.TextAlignment="Center"/>
                     <DataGridTextColumn Header="Min Result" Binding="{Binding MinResult}" Width="*"/>
                     <DataGridTextColumn Header="Avg Result" Binding="{Binding AvgResult}" Width="*"/>
-                    <DataGridTextColumn Header="Count of operation" Binding="{Binding CountInLast30Days}" Width="*"/>
+                    <DataGridTextColumn Header="Last 30 Days Operation Count" Binding="{Binding CountInLast30Days}" Width="*"/>
                 </DataGrid.Columns>
             </DataGrid>
         </StackPanel>

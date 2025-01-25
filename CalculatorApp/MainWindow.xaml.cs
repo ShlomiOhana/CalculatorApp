@@ -31,13 +31,8 @@ namespace CalculatorApp
                 double.TryParse(Number1TextBox.Text, out value1);
                 double.TryParse(Number2TextBox.Text, out value2);
                 OperationType operation = GetEnumValue(OperationComboBox.Text);
-
-                GetHistoryStats((byte)operation);
-                GetHistoryLastThreeEntries((byte)operation);
                 double result = CalculateResult(value1, value2, operation);
 
-                // Update Result
-                ResultTextBlock.Text = $"Result: {result.ToString()}";
                 var historyEntry = new HistoryEntry
                 {
                     Date = DateTime.Now,
@@ -46,6 +41,10 @@ namespace CalculatorApp
                     Operation = (byte)operation,
                     Result = result
                 };
+
+                GetHistoryStats((byte)operation);
+                GetHistoryLastThreeEntries((byte)operation);
+                ResultTextBlock.Text = $"Result: {result.ToString()}";
                 AddToHistoryDb(historyEntry);
             }
         }
@@ -130,11 +129,10 @@ namespace CalculatorApp
         {
             using var httpClient = new HttpClient();
             var typeString = operationType.ToString();
-            var response = await httpClient.GetStringAsync($"https://localhost:7102/api/calculatorHistory/{operationType}");
 
             HistoryEntries.Clear();
+            var response = await httpClient.GetStringAsync($"https://localhost:7102/api/calculatorHistory/{operationType}");
             HistoryEntries = JsonConvert.DeserializeObject<List<HistoryEntry>>(response);
-
             HistoryDataGrid.ItemsSource = HistoryEntries ?? new List<HistoryEntry>();
             HistoryDataGrid.Items.Refresh();
         }
@@ -143,9 +141,9 @@ namespace CalculatorApp
         {
             using var httpClient = new HttpClient();
             var typeString = operationType.ToString();
-            var response = await httpClient.GetStringAsync($"https://localhost:7102/api/calculatorHistory/stats/{operationType}");
 
             HistoryStats.Clear();
+            var response = await httpClient.GetStringAsync($"https://localhost:7102/api/calculatorHistory/stats/{operationType}");
             var result = JsonConvert.DeserializeObject<HistoryStats>(response) ?? new HistoryStats();
             HistoryStats.Add(result);
 
